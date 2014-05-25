@@ -1,0 +1,25 @@
+{
+  "name": "async-talk",
+  "version": "0.0.1",
+  "homepage": "https://github.com/dagda1/async-talk",
+  "authors": [
+    "Paul Cowan <dagda1@scotalt.net>"
+  ],
+  "description": "Call back alternatives",
+  "main": "src/main.js",
+  "dependencies": {
+      "jquery": "2.1.0",
+      "underscore": "1.6",
+      "rsvp": "3.0.6"
+  },
+  "keywords": [
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

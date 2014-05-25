@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <title>dealing with asynchroncity</title>
+  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+  <META HTTP-EQUIV="Expires" CONTENT="-1">
+  <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="styles/default.css" />
+  <script src="underscore/underscore.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="a-list">
+      <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <span></span>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item">Callback Hell <a href="#" class="btn btn-primary btn-large call-back pull-right">Load</a></li>
+        <li class="list-group-item">Promises <a href="#" class="btn btn-primary btn-large promises pull-right">Load</a></li>
+        <li class="list-group-item">Generators <a href="#" class="btn btn-primary btn-large generators pull-right">Load</a></li>
+      </ul>
+      <ul class="list-group text-center">
+          <li class="list-group-item"><a href="#" class="btn btn-primary btn-large clear">Clear</a></li>
+      </ul>
+    </div>
+    <div>
+      <table class="table-condensed hidden">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<script type="text/html" id='bulk-template'>
+  <% _.each(items,function(item,key,list){ %>
+    <tr>
+      <td><%= key + 1 %></td>
+      <td><%= item.name %></td>
+      <td><%= item.email %></td>
+    </tr>
+  <% }) %>
+</script>
+<script type="text/javascript">
+<!--
+  async.setupHandlers();
+-->
+</script>
+</body>
+</html>
