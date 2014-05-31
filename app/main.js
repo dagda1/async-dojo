@@ -11430,10 +11430,6 @@ define("handler",
       });
     }
 
-    $(function() {
-      $('.x-small').focus();
-    });
-
     __exports__.setupHandlers = setupHandlers;
   });
 define("login", 

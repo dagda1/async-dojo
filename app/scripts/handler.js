@@ -100,8 +100,4 @@ function setupHandlers() {
   });
 }
 
-$(function() {
-  $('.x-small').focus();
-});
-
 export { setupHandlers };
