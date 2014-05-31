@@ -11310,8 +11310,16 @@ define("generators",
     }
 
     BulkLoader.prototype.load = function(password) {
-      var self = this;
+      // try {
+      //   var token = getJSON('/login');
+      //   this.users = getJSON('/users');
+      //   this.contacts = getJSON('/contacts');
+      //   this.companies = getJSON('/companies');
 
+      //   return this;
+      // } catch (err) {
+      //   throw err;
+      // }
     };
 
     __exports__["default"] = BulkLoader;
