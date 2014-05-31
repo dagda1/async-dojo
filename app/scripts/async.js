@@ -1,3 +1,4 @@
+import { LoginController } from "login";
 import { Authenticator } from "authenticator";
 import { CallbackBulkLoader } from "callbacks";
 import { PromiseBulkLoader } from "promises";
@@ -8,6 +9,7 @@ import { setupHandlers} from "handler";
 
 export {
   setupHandlers,
+  LoginController,
   Authenticator,
   CallbackBulkLoader,
   PromiseBulkLoader,

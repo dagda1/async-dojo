@@ -11194,18 +11194,20 @@ var define, requireModule;
 })();
 
 define("async", 
-  ["authenticator","callbacks","promises","generators","people-merger","renderer","handler","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
+  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","handler","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
     "use strict";
-    var Authenticator = __dependency1__.Authenticator;
-    var CallbackBulkLoader = __dependency2__.CallbackBulkLoader;
-    var PromiseBulkLoader = __dependency3__.PromiseBulkLoader;
-    var GeneratorBulkLoader = __dependency4__.GeneratorBulkLoader;
-    var PeopleMerger = __dependency5__.PeopleMerger;
-    var Renderer = __dependency6__.Renderer;
-    var setupHandlers = __dependency7__.setupHandlers;
+    var LoginController = __dependency1__.LoginController;
+    var Authenticator = __dependency2__.Authenticator;
+    var CallbackBulkLoader = __dependency3__.CallbackBulkLoader;
+    var PromiseBulkLoader = __dependency4__.PromiseBulkLoader;
+    var GeneratorBulkLoader = __dependency5__.GeneratorBulkLoader;
+    var PeopleMerger = __dependency6__.PeopleMerger;
+    var Renderer = __dependency7__.Renderer;
+    var setupHandlers = __dependency8__.setupHandlers;
 
     __exports__.setupHandlers = setupHandlers;
+    __exports__.LoginController = LoginController;
     __exports__.Authenticator = Authenticator;
     __exports__.CallbackBulkLoader = CallbackBulkLoader;
     __exports__.PromiseBulkLoader = PromiseBulkLoader;
@@ -11241,12 +11243,12 @@ define("callbacks",
       this.users = [];
       this.companies = [];
       this.contacts = [];
-    };
+    }
 
-    BulkLoader.prototype.load = function(callback){
+    BulkLoader.prototype.load = function(password, callback, errBk){
       var self = this;
 
-      getJSON('/login').done(function(data) {
+      getJSON('/auth/' + password).done(function(data) {
         getJSON('/users').done(function(data) {
           self.users = data;
           getJSON('/companies').done(function(data) {
@@ -11254,10 +11256,10 @@ define("callbacks",
             getJSON('/contacts').done(function(data) {
               self.contacts = data;
               callback(self);
-            });
-          });
-        });
-      });
+            }).fail(errBk);
+          }).fail(errBk);
+        }).fail(errBk);
+      }).fail(errBk);
     };
 
     __exports__["default"] = BulkLoader;
@@ -11305,9 +11307,9 @@ define("generators",
       this.users = [];
       this.companies = [];
       this.contacts = [];
-    };
+    }
 
-    BulkLoader.prototype.load = function() {
+    BulkLoader.prototype.load = function(password) {
       var self = this;
 
     };
@@ -11315,15 +11317,16 @@ define("generators",
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
-  ["authenticator","callbacks","promises","generators","people-merger","renderer","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __exports__) {
+  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
     "use strict";
-    var Authenticator = __dependency1__["default"];
-    var CallbackBulkLoader = __dependency2__["default"];
-    var PromiseBulkLoader = __dependency3__["default"];
-    var GeneratorBulkLoader = __dependency4__["default"];
-    var PeopleMerger = __dependency5__["default"];
-    var Renderer = __dependency6__["default"];
+    var LoginController = __dependency1__["default"];
+    var Authenticator = __dependency2__["default"];
+    var CallbackBulkLoader = __dependency3__["default"];
+    var PromiseBulkLoader = __dependency4__["default"];
+    var GeneratorBulkLoader = __dependency5__["default"];
+    var PeopleMerger = __dependency6__["default"];
+    var Renderer = __dependency7__["default"];
 
     function setupHandlers() {
       var content = $(".table-condensed tbody"),
@@ -11369,10 +11372,17 @@ define("handler",
         renderer.render();
       };
 
+      $('.login').on('click', function(e) {
+        var loginController = new LoginController();
+
+        loginController.login(successHandler, errorHandler);
+      });
+
+
       $('.authenticate').on('click', function(e) {
         var authenticator = new Authenticator();
 
-        var input = $('input[type=password]');
+        var input = $('input[type=password]').eq(0);
 
         authenticator.login(input.val(), successHandler, errorHandler);
 
@@ -11382,43 +11392,63 @@ define("handler",
       $('.call-back').on('click', function(e) {
         var bulkLoader = new CallbackBulkLoader();
 
-        bulkLoader.load(render);
+        var input = $('input[type=password]').eq(1);
+
+        bulkLoader.load(input.val(), render, errorHandler);
+
+        input.val('');
       });
 
       $('.promises').on('click', function(e) {
         var bulkLoader = new PromiseBulkLoader();
 
+        var input = $('input[type=password]').eq(3);
+
         bulkLoader.load()
           .then(render)
           .catch(errorHandler);
+
+        input.val('');
       });
 
       $('.generators').on('click', function(e) {
         var bulkLoader = new GeneratorBulkLoader();
 
-        bulkLoader.load().then(function(result) {
-          render(result);
-        }, errorHandler);
+        var input = $('input[type=password]').eq(4);
+
+        input.val('');
       });
 
       $('.clear').on('click', function(e) {
         content.html('');
         content.parent().addClass('hidden');
+        $('input[type=password]').clear();
       });
     }
 
     $(function() {
-      $('.x-small').focus()
-      .on('keydown', function(e) {
-        if(e.keyCode !== 13) {
-          return;
-        }
-
-        $('.authenticate').trigger('click');
-      });
+      $('.x-small').focus();
     });
 
     __exports__.setupHandlers = setupHandlers;
+  });
+define("login", 
+  ["read","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var getJSON = __dependency1__["default"];
+
+    function LoginController() {}
+
+    LoginController.prototype.login = function(cbk, errBk) {
+      getJSON("/login")
+        .done(function(data) {
+          return cbk("You have successfully logged in!");
+        })
+        .fail(errBk);
+    };
+
+    __exports__["default"] = LoginController;
   });
 define("people-merger", 
   ["exports"],
@@ -11461,27 +11491,10 @@ define("promises",
       this.users = [];
       this.companies = [];
       this.contacts = [];
-    };
+    }
 
-    BulkLoader.prototype.load = function(callback){
-      var self = this;
+    BulkLoader.prototype.load = function(password){
 
-      return new RSVP.Promise(function(resolve, reject) {
-        return getJSON('/login').then(function(token) {
-
-          return RSVP.hash({
-            users: getJSON('/users'),
-            contacts: getJSON('/contacts'),
-            companies: getJSON('/companies')
-          }).then(function(hash) {
-            self.users = hash.users;
-            self.companies = hash.companies;
-            self.contacts = hash.contacts;
-
-            return resolve(self);
-          });
-        }).catch(reject);
-      });
     };
 
     __exports__["default"] = BulkLoader;

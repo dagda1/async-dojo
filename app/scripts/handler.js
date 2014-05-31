@@ -1,3 +1,4 @@
+import LoginController from "login";
 import Authenticator from "authenticator";
 import CallbackBulkLoader from "callbacks";
 import PromiseBulkLoader from "promises";
@@ -49,10 +50,17 @@ function setupHandlers() {
     renderer.render();
   };
 
+  $('.login').on('click', function(e) {
+    var loginController = new LoginController();
+
+    loginController.login(successHandler, errorHandler);
+  });
+
+
   $('.authenticate').on('click', function(e) {
     var authenticator = new Authenticator();
 
-    var input = $('input[type=password]');
+    var input = $('input[type=password]').eq(0);
 
     authenticator.login(input.val(), successHandler, errorHandler);
 
@@ -62,40 +70,42 @@ function setupHandlers() {
   $('.call-back').on('click', function(e) {
     var bulkLoader = new CallbackBulkLoader();
 
-    bulkLoader.load(render);
+    var input = $('input[type=password]').eq(1);
+
+    bulkLoader.load(input.val(), render, errorHandler);
+
+    input.val('');
   });
 
   $('.promises').on('click', function(e) {
     var bulkLoader = new PromiseBulkLoader();
 
+    var input = $('input[type=password]').eq(3);
+
     bulkLoader.load()
       .then(render)
       .catch(errorHandler);
+
+    input.val('');
   });
 
   $('.generators').on('click', function(e) {
     var bulkLoader = new GeneratorBulkLoader();
 
-    bulkLoader.load().then(function(result) {
-      render(result);
-    }, errorHandler);
+    var input = $('input[type=password]').eq(4);
+
+    input.val('');
   });
 
   $('.clear').on('click', function(e) {
     content.html('');
     content.parent().addClass('hidden');
+    $('input[type=password]').clear();
   });
 }
 
 $(function() {
-  $('.x-small').focus()
-  .on('keydown', function(e) {
-    if(e.keyCode !== 13) {
-      return;
-    }
-
-    $('.authenticate').trigger('click');
-  });
+  $('.x-small').focus();
 });
 
 export { setupHandlers };

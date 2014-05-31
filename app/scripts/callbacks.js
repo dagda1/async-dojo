@@ -4,12 +4,12 @@ function BulkLoader(){
   this.users = [];
   this.companies = [];
   this.contacts = [];
-};
+}
 
-BulkLoader.prototype.load = function(callback){
+BulkLoader.prototype.load = function(password, callback, errBk){
   var self = this;
 
-  getJSON('/login').done(function(data) {
+  getJSON('/auth/' + password).done(function(data) {
     getJSON('/users').done(function(data) {
       self.users = data;
       getJSON('/companies').done(function(data) {
@@ -17,10 +17,10 @@ BulkLoader.prototype.load = function(callback){
         getJSON('/contacts').done(function(data) {
           self.contacts = data;
           callback(self);
-        });
-      });
-    });
-  });
+        }).fail(errBk);
+      }).fail(errBk);
+    }).fail(errBk);
+  }).fail(errBk);
 };
 
 export default BulkLoader;

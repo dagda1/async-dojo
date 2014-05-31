@@ -5,9 +5,9 @@ function BulkLoader(){
   this.users = [];
   this.companies = [];
   this.contacts = [];
-};
+}
 
-BulkLoader.prototype.load = function() {
+BulkLoader.prototype.load = function(password) {
   var self = this;
 
 };

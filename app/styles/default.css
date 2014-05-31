@@ -10,6 +10,10 @@ body {
   padding: 30px;
 }
 
+ul.list-group{
+  position: relative;
+}
+
 .a-list {
   margin-left: 0;
   margin-right: 0;
@@ -54,11 +58,9 @@ body {
   display: none;
 }
 
-.first {
-  margin-right: 120px;
-}
-
 .x-small {
   display: inline;
   width: 130px;
+  position: absolute;
+  left: 270px;
 }
