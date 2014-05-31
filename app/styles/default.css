@@ -50,6 +50,15 @@ body {
   box-sizing: border-box;
 }
 
-.alert-danger {
+.alert {
   display: none;
+}
+
+.first {
+  margin-right: 120px;
+}
+
+.x-small {
+  display: inline;
+  width: 130px;
 }

@@ -19,6 +19,12 @@ app.configure('development', function(){
 
   app.use(app.router);
 
+  app.use(function(req, res, next){
+    res.status(404);
+
+    res.send({ error: 'Resource Not found' });
+  });
+
   app.use(function(err, req, res, next) {
     res.status(500);
     res.json({ error: err });
@@ -35,11 +41,17 @@ app.all('*', function(request, response, next) {
 // create GET routes
 fs.readdirSync(__dirname + '/app/controllers').forEach(function(name){
   var obj = require('./app/controllers/' + name),
-      name = obj.name || name,
+      resource = obj.name || name,
       path;
 
-  app.get("/" + name, obj.index);
+  if(['index.js', 'auth'].indexOf(resource) !== -1 ) {
+    return;
+  }
+
+  app.get("/" + resource, obj.index);
 });
+
+app.get("/auth/:password", require('./app/controllers/auth').index);
 
 var port = process.env.PORT || 3000;
 

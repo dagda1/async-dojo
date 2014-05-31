@@ -1,3 +1,4 @@
+import Authenticator from "authenticator";
 import CallbackBulkLoader from "callbacks";
 import PromiseBulkLoader from "promises";
 import GeneratorBulkLoader from "generators";
@@ -8,6 +9,20 @@ function setupHandlers() {
   var content = $(".table-condensed tbody"),
       template = $('#bulk-template');
 
+  var successHandler = function(message) {
+    var el = $('.alert');
+
+    $('span', el).html(message);
+
+    el.addClass('alert-success');
+
+    el.fadeIn('slow', function() {
+      el.fadeOut(3000, function() {
+        el.removeClass('alert-success');
+      });
+    });
+  };
+
   var errorHandler = function(error) {
     var el = $('.alert'),
         errorBody = error.responseJSON ||
@@ -17,8 +32,12 @@ function setupHandlers() {
 
     $('span', el).html(message);
 
+    el.addClass('alert-danger');
+
     el.fadeIn('slow', function() {
-      el.fadeOut(3000);
+      el.fadeOut(3000, function() {
+        el.removeClass('alert-danger');
+      });
     });
   };
 
@@ -30,7 +49,15 @@ function setupHandlers() {
     renderer.render();
   };
 
-  RSVP.on('error', errorHandler);
+  $('.authenticate').on('click', function(e) {
+    var authenticator = new Authenticator();
+
+    var input = $('input[type=password]');
+
+    authenticator.login(input.val(), successHandler, errorHandler);
+
+    input.val('');
+  });
 
   $('.call-back').on('click', function(e) {
     var bulkLoader = new CallbackBulkLoader();
@@ -59,5 +86,16 @@ function setupHandlers() {
     content.parent().addClass('hidden');
   });
 }
+
+$(function() {
+  $('.x-small').focus()
+  .on('keydown', function(e) {
+    if(e.keyCode !== 13) {
+      return;
+    }
+
+    $('.authenticate').trigger('click');
+  });
+});
 
 export { setupHandlers };

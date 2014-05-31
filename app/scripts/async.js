@@ -1,3 +1,4 @@
+import { Authenticator } from "authenticator";
 import { CallbackBulkLoader } from "callbacks";
 import { PromiseBulkLoader } from "promises";
 import { GeneratorBulkLoader } from "generators";
@@ -7,6 +8,7 @@ import { setupHandlers} from "handler";
 
 export {
   setupHandlers,
+  Authenticator,
   CallbackBulkLoader,
   PromiseBulkLoader,
   GeneratorBulkLoader,

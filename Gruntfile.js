@@ -12,7 +12,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks("grunt-es6-module-transpiler");
   grunt.task.registerTask('default', ['start']);
-  grunt.task.registerTask("export", ["transpile", "concat_sourcemap:app", "copy:mapToResult", "browser:dist", "concat_sourcemap:main"]);
+  grunt.task.registerTask("export", ["transpile", "concat_sourcemap:app", "browser:dist"]);
   grunt.task.registerTask("preview", ["watch"]);
   grunt.task.registerTask('start', ['export', 'express:dev']);
 };

@@ -11194,27 +11194,49 @@ var define, requireModule;
 })();
 
 define("async", 
-  ["callbacks","promises","generators","people-merger","renderer","handler","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __exports__) {
+  ["authenticator","callbacks","promises","generators","people-merger","renderer","handler","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
     "use strict";
-    var CallbackBulkLoader = __dependency1__.CallbackBulkLoader;
-    var PromiseBulkLoader = __dependency2__.PromiseBulkLoader;
-    var GeneratorBulkLoader = __dependency3__.GeneratorBulkLoader;
-    var PeopleMerger = __dependency4__.PeopleMerger;
-    var Renderer = __dependency5__.Renderer;
-    var setupHandlers = __dependency6__.setupHandlers;
+    var Authenticator = __dependency1__.Authenticator;
+    var CallbackBulkLoader = __dependency2__.CallbackBulkLoader;
+    var PromiseBulkLoader = __dependency3__.PromiseBulkLoader;
+    var GeneratorBulkLoader = __dependency4__.GeneratorBulkLoader;
+    var PeopleMerger = __dependency5__.PeopleMerger;
+    var Renderer = __dependency6__.Renderer;
+    var setupHandlers = __dependency7__.setupHandlers;
 
     __exports__.setupHandlers = setupHandlers;
+    __exports__.Authenticator = Authenticator;
     __exports__.CallbackBulkLoader = CallbackBulkLoader;
     __exports__.PromiseBulkLoader = PromiseBulkLoader;
     __exports__.GeneratorBulkLoader = GeneratorBulkLoader;
     __exports__.PeopleMerger = PeopleMerger;
     __exports__.Renderer = Renderer;
   });
-define("callbacks", 
-  ["exports"],
-  function(__exports__) {
+define("authenticator", 
+  ["read","exports"],
+  function(__dependency1__, __exports__) {
     "use strict";
+    var getJSON = __dependency1__["default"];
+
+    function Authenticator() {}
+
+    Authenticator.prototype.login = function(password, cbk, errBk) {
+      getJSON("/auth/" + password)
+        .done(function(data) {
+          return cbk("Welcome back captain!");
+        })
+        .fail(errBk);
+    };
+
+    __exports__["default"] = Authenticator;
+  });
+define("callbacks", 
+  ["read","exports"],
+  function(__dependency1__, __exports__) {
+    "use strict";
+    var getJSON = __dependency1__["default"];
+
     function BulkLoader(){
       this.users = [];
       this.companies = [];
@@ -11224,12 +11246,27 @@ define("callbacks",
     BulkLoader.prototype.load = function(callback){
       var self = this;
 
-      $.getJSON('/login').done(function(data) {
-
+      getJSON('/login').done(function(data) {
+        getJSON('/users').done(function(data) {
+          self.users = data;
+          getJSON('/companies').done(function(data) {
+            self.companies = data;
+            getJSON('/contacts').done(function(data) {
+              self.contacts = data;
+              callback(self);
+            });
+          });
+        });
       });
     };
 
     __exports__["default"] = BulkLoader;
+  });
+define("first_refactor", 
+  ["read"],
+  function(__dependency1__) {
+    "use strict";
+    var getJSON = __dependency1__["default"];
   });
 define("generator-utils", 
   ["exports"],
@@ -11278,18 +11315,33 @@ define("generators",
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
-  ["callbacks","promises","generators","people-merger","renderer","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __exports__) {
+  ["authenticator","callbacks","promises","generators","people-merger","renderer","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __exports__) {
     "use strict";
-    var CallbackBulkLoader = __dependency1__["default"];
-    var PromiseBulkLoader = __dependency2__["default"];
-    var GeneratorBulkLoader = __dependency3__["default"];
-    var PeopleMerger = __dependency4__["default"];
-    var Renderer = __dependency5__["default"];
+    var Authenticator = __dependency1__["default"];
+    var CallbackBulkLoader = __dependency2__["default"];
+    var PromiseBulkLoader = __dependency3__["default"];
+    var GeneratorBulkLoader = __dependency4__["default"];
+    var PeopleMerger = __dependency5__["default"];
+    var Renderer = __dependency6__["default"];
 
     function setupHandlers() {
       var content = $(".table-condensed tbody"),
           template = $('#bulk-template');
+
+      var successHandler = function(message) {
+        var el = $('.alert');
+
+        $('span', el).html(message);
+
+        el.addClass('alert-success');
+
+        el.fadeIn('slow', function() {
+          el.fadeOut(3000, function() {
+            el.removeClass('alert-success');
+          });
+        });
+      };
 
       var errorHandler = function(error) {
         var el = $('.alert'),
@@ -11300,8 +11352,12 @@ define("handler",
 
         $('span', el).html(message);
 
+        el.addClass('alert-danger');
+
         el.fadeIn('slow', function() {
-          el.fadeOut(3000);
+          el.fadeOut(3000, function() {
+            el.removeClass('alert-danger');
+          });
         });
       };
 
@@ -11313,7 +11369,15 @@ define("handler",
         renderer.render();
       };
 
-      RSVP.on('error', errorHandler);
+      $('.authenticate').on('click', function(e) {
+        var authenticator = new Authenticator();
+
+        var input = $('input[type=password]');
+
+        authenticator.login(input.val(), successHandler, errorHandler);
+
+        input.val('');
+      });
 
       $('.call-back').on('click', function(e) {
         var bulkLoader = new CallbackBulkLoader();
@@ -11342,6 +11406,17 @@ define("handler",
         content.parent().addClass('hidden');
       });
     }
+
+    $(function() {
+      $('.x-small').focus()
+      .on('keydown', function(e) {
+        if(e.keyCode !== 13) {
+          return;
+        }
+
+        $('.authenticate').trigger('click');
+      });
+    });
 
     __exports__.setupHandlers = setupHandlers;
   });
@@ -11389,7 +11464,24 @@ define("promises",
     };
 
     BulkLoader.prototype.load = function(callback){
+      var self = this;
 
+      return new RSVP.Promise(function(resolve, reject) {
+        return getJSON('/login').then(function(token) {
+
+          return RSVP.hash({
+            users: getJSON('/users'),
+            contacts: getJSON('/contacts'),
+            companies: getJSON('/companies')
+          }).then(function(hash) {
+            self.users = hash.users;
+            self.companies = hash.companies;
+            self.contacts = hash.contacts;
+
+            return resolve(self);
+          });
+        }).catch(reject);
+      });
     };
 
     __exports__["default"] = BulkLoader;
@@ -11398,25 +11490,40 @@ define("read",
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = function getJSON(url) {
-      var promise = new RSVP.Promise(function(resolve, reject){
-        var client = new XMLHttpRequest();
-        client.open("GET", url);
-        client.onreadystatechange = handler;
-        client.responseType = "json";
-        client.setRequestHeader("Accept", "application/json");
-        client.send();
+    __exports__["default"] = function getJSON(url, options) {
+      var client = new XMLHttpRequest();
+      client.open("GET", url);
+      client.onreadystatechange = handler;
+      client.responseType = "json";
+      client.setRequestHeader("Accept", "application/json");
+      client.send();
 
-        function handler() {
-          if (this.readyState === this.DONE) {
-            if (this.status === 200) { resolve(this.response); }
-            else { reject(this); }
-          }
-        };
-      });
+      function Result() {}
 
-      return promise;
-    };
+      Result.prototype.success = function(){ return this; };
+      Result.prototype.error = function(){ return this; };
+
+      Result.prototype.done = function(callBack) {
+        this.success = callBack;
+        return this;
+      };
+
+      Result.prototype.fail = function(callBack) {
+        this.error = callBack;
+        return this;
+      };
+
+      var result = new Result();
+
+      function handler() {
+        if (this.readyState === this.DONE) {
+          if (this.status === 200) { result.success(this.response); }
+          else { result.error(this); }
+        }
+      }
+
+      return result;
+    }
   });
 define("renderer", 
   ["exports"],
@@ -11435,7 +11542,6 @@ define("renderer",
 
     __exports__["default"] = Renderer;
   });
-//
+//# sourceMappingURL=app.js.map
 window.async = requireModule("async");
 })(window);
-//# sourceMappingURL=main.js.map
