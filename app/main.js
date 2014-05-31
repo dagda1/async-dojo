@@ -11418,7 +11418,7 @@ define("handler",
       $('.clear').on('click', function(e) {
         content.html('');
         content.parent().addClass('hidden');
-        $('input[type=password]').clear();
+        $('input[type=password]').val('');
       });
     }
 
