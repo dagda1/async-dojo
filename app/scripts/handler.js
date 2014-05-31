@@ -80,7 +80,11 @@ function setupHandlers() {
   $('.promises').on('click', function(e) {
     var bulkLoader = new PromiseBulkLoader();
 
-    var input = $('input[type=password]').eq(3);
+    var input = $('input[type=password]').eq(2);
+
+    bulkLoader.load(input.val())
+      .then(render)
+      .catch(errorHandler);
 
     input.val('');
   });
@@ -99,9 +103,5 @@ function setupHandlers() {
     $('input[type=password]').val('');
   });
 }
-
-$(function() {
-  $('.x-small').focus();
-});
 
 export { setupHandlers };

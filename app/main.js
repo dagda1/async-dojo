@@ -11402,7 +11402,11 @@ define("handler",
       $('.promises').on('click', function(e) {
         var bulkLoader = new PromiseBulkLoader();
 
-        var input = $('input[type=password]').eq(3);
+        var input = $('input[type=password]').eq(2);
+
+        bulkLoader.load(input.val())
+          .then(render)
+          .catch(errorHandler);
 
         input.val('');
       });
@@ -11421,10 +11425,6 @@ define("handler",
         $('input[type=password]').val('');
       });
     }
-
-    $(function() {
-      $('.x-small').focus();
-    });
 
     __exports__.setupHandlers = setupHandlers;
   });
@@ -11490,7 +11490,25 @@ define("promises",
     }
 
     BulkLoader.prototype.load = function(password){
+      var self = this;
 
+      return new RSVP.Promise(function(resolve, reject) {
+        return getJSON('/auth/' + password).then(function() {
+
+          return RSVP.hash({
+            users: getJSON('/users'),
+            contacts: getJSON('/contacts'),
+            companies: getJSON('/companies')
+          }).then(function(hash) {
+            self.users = hash.users;
+            self.companies = hash.companies;
+            self.contacts = hash.contacts;
+
+            return resolve(self);
+          });
+
+        }).catch(reject);
+      });
     };
 
     __exports__["default"] = BulkLoader;
@@ -11500,38 +11518,21 @@ define("read",
   function(__exports__) {
     "use strict";
     __exports__["default"] = function getJSON(url, options) {
-      var client = new XMLHttpRequest();
-      client.open("GET", url);
-      client.onreadystatechange = handler;
-      client.responseType = "json";
-      client.setRequestHeader("Accept", "application/json");
-      client.send();
+      return new RSVP.Promise(function(resolve, reject) {
+        var client = new XMLHttpRequest();
+        client.open("GET", url);
+        client.onreadystatechange = handler;
+        client.responseType = "json";
+        client.setRequestHeader("Accept", "application/json");
+        client.send();
 
-      function Result() {}
-
-      Result.prototype.success = function(){ return this; };
-      Result.prototype.error = function(){ return this; };
-
-      Result.prototype.done = function(callBack) {
-        this.success = callBack;
-        return this;
-      };
-
-      Result.prototype.fail = function(callBack) {
-        this.error = callBack;
-        return this;
-      };
-
-      var result = new Result();
-
-      function handler() {
-        if (this.readyState === this.DONE) {
-          if (this.status === 200) { result.success(this.response); }
-          else { result.error(this); }
+        function handler() {
+          if (this.readyState === this.DONE) {
+            if (this.status === 200) { resolve(this.response); }
+            else { reject(this); }
+          }
         }
-      }
-
-      return result;
+      });
     }
   });
 define("renderer", 
