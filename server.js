@@ -22,7 +22,7 @@ app.configure('development', function(){
   app.use(function(req, res, next){
     res.status(404);
 
-    res.send({ error: 'Resource Not found' });
+    res.send({ error: 'No password entered...try again.' });
   });
 
   app.use(function(err, req, res, next) {
