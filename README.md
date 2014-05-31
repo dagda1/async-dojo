@@ -22,7 +22,7 @@ Asynchronicity
 
 2.  This file contains an ```Authenticator``` object which has one ```login``` method.
 
-3.  You can test the code works by entering ```007``` into the password field by the Authenticate button and pressing Authenticate.  A success message will be entered
+3.  You can test the code works by entering ```007``` into the password field by the Authenticate button and pressing Authenticate.  A success message will be entered.  Entering any other character sequence and pressing ***Authenticate*** wil display an error message.
 
 3.  ```login``` makes an asynchronous call via the ```getJSON``` method which is located in ```~/app/scripts/read.js```.
 
