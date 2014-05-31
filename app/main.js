@@ -11225,16 +11225,7 @@ define("callbacks",
       var self = this;
 
       $.getJSON('/login').done(function(data) {
-        $.getJSON('/users').done(function(data) {
-          self.users = data;
-          $.getJSON('/companies').done(function(data) {
-            self.companies = data;
-            $.getJSON('/contacts').done(function(data) {
-              self.contacts = data;
-              callback(self);
-            });
-          });
-        });
+
       });
     };
 
@@ -11282,18 +11273,6 @@ define("generators",
     BulkLoader.prototype.load = function() {
       var self = this;
 
-      return async(function * () {
-        try {
-          let token = yield getJSON('/login');
-          self.users = yield getJSON('/users');
-          self.contacts = yield getJSON('/contacts');
-          self.companies = yield getJSON('/companies');
-
-          return self;
-        } catch (err) {
-          throw err;
-        }
-      });
     };
 
     __exports__["default"] = BulkLoader;
@@ -11410,24 +11389,7 @@ define("promises",
     };
 
     BulkLoader.prototype.load = function(callback){
-      var self = this;
 
-      return new RSVP.Promise(function(resolve, reject) {
-        return getJSON('/login').then(function(token) {
-
-          return RSVP.hash({
-            users: getJSON('/users'),
-            contacts: getJSON('/contacts'),
-            companies: getJSON('/companies')
-          }).then(function(hash) {
-            self.users = hash.users;
-            self.companies = hash.companies;
-            self.contacts = hash.contacts;
-
-            return resolve(self);
-          });
-        }).catch(reject);
-      });
     };
 
     __exports__["default"] = BulkLoader;

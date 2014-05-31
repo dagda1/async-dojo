@@ -1,5 +1,5 @@
 module.exports = {
-  src: {
+  scripts: {
     files: ['app/scripts/*.js'],
     tasks: ['expo'],
     options: {
