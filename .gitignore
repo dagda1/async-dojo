@@ -8,4 +8,6 @@ node_modules/*
 bower_components/*
 tests/dist/
 
+app/app.js.map
+
 tests/lib/tmpl.min.js

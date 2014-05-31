@@ -11,10 +11,8 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks("grunt-es6-module-transpiler");
-  grunt.task.registerTask('test', ['build', 'jshint', 'concat:test', 'karma']);
-  grunt.task.registerTask('build', ['neuter:build']);
   grunt.task.registerTask('default', ['start']);
-  grunt.task.registerTask("expo", ["transpile", "concat:amd", "browser:dist"]);
+  grunt.task.registerTask("export", ["transpile", "concat_sourcemap:app", "copy:mapToResult", "browser:dist", "concat_sourcemap:main"]);
   grunt.task.registerTask("preview", ["watch"]);
-  grunt.task.registerTask('start', ['expo', 'express:dev']);
+  grunt.task.registerTask('start', ['export', 'express:dev']);
 };

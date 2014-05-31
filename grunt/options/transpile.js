@@ -11,15 +11,15 @@ function nameFor(path) {
 
 
 module.exports = {
-  amd: {
+  app: {
     type: 'amd',
     moduleName: nameFor,
     files: [{
       expand: true,
       cwd: 'app/scripts',
       src: [ '**/*.js', ],
-      dest: 'tmp/',
-      ext: '.amd.js'
+      dest: 'tmp/transpiled',
+      ext: '.js'
     }]
   }
 };

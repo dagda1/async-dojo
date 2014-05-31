@@ -1,6 +1,6 @@
-module.exports = {
-  amd: {
-    src: "tmp/*.amd.js",
-    dest: "dist/async.amd.js"
-  }
-};
+// module.exports = {
+//   amd: {
+//     src: "tmp/*.amd.js",
+//     dest: "dist/async.amd.js"
+//   }
+// };
