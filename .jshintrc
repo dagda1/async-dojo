@@ -36,7 +36,8 @@
 "__dirname",
 "process",
 "alert",
-"exports"
+"exports",
+"RSVP"
 ],
 "node": false,
 "es5": true,

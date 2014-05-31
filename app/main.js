@@ -11404,10 +11404,6 @@ define("handler",
 
         var input = $('input[type=password]').eq(3);
 
-        bulkLoader.load()
-          .then(render)
-          .catch(errorHandler);
-
         input.val('');
       });
 
