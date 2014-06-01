@@ -57,3 +57,7 @@ Asynchronicity
 2.  Open the file ```~/app/scripts/generators.js```
 
 3.  Open file ```~/app/scripts/handler.js``` and go to line
+
+The answer to question one is 2
+The answer to question two is 4
+The answer to question three is 42 
