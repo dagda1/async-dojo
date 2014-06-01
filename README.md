@@ -96,5 +96,4 @@ Asynchronicity
     };
 ```
 
-
-    **hint:** You call ```async```, passing in the generator function.
+**hint:** You call ```async```, passing in the generator function.
