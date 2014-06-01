@@ -68,3 +68,11 @@ Asynchronicity
     > The answer to question two is 4
 
     > The answer to question three is 42
+
+### Test 3
+
+1.  Either commit your work or reset the generators branch to give you an empty click handler and an an empty generator function in ```~/app/scripts/generators.js```.
+
+2.  Your mission in this final test is to refactor the followng code to use the new fangled generators:
+
+
