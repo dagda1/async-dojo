@@ -75,4 +75,25 @@ Asynchronicity
 
 2.  Your mission in this final test is to refactor the followng code to use the new fangled generators:
 
+    ```
+    BulkLoader.prototype.load = function(password){
+      var self = this;
 
+      return new RSVP.Promise(function(resolve, reject) {
+        return getJSON('/auth/' + password).then(function() {
+          return getJSON('/users');
+        }).then(function(data) {
+          self.users = data;
+          return getJSON('/contacts');
+        }).then(function(data) {
+          self.contacts = data;
+          return getJSON('/companies');
+        }).then(function(data) {
+          self.companies = data;
+          resolve(self);
+        });
+      });
+    };
+    ```
+
+    **hint:** You call ```async```, passing in the generator function.
