@@ -11309,7 +11309,19 @@ define("generators",
       this.contacts = [];
     }
 
-    // BulkLoader.prototype.iterator = ????
+    BulkLoader.prototype.iterator = function () {
+      let one = "What is 2 + 2?";
+
+      console.log("The answer to question one is " + one);
+
+      let two = "What is 2 x 2?";
+
+      console.log("The answer to question two is " + two);
+
+      let three = "What is the answer to life the universe and everything?";
+
+      console.log("The answer to question three is " + three);
+    };
 
     __exports__["default"] = BulkLoader;
   });
@@ -11409,7 +11421,9 @@ define("handler",
       });
 
       $('.generators').on('click', function(e) {
+        var bulkLoader = new GeneratorBulkLoader();
 
+        var iterator = bulkLoader.iterator();
       });
 
       $('.clear').on('click', function(e) {

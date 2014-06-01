@@ -90,7 +90,9 @@ function setupHandlers() {
   });
 
   $('.generators').on('click', function(e) {
+    var bulkLoader = new GeneratorBulkLoader();
 
+    var iterator = bulkLoader.iterator();
   });
 
   $('.clear').on('click', function(e) {
