@@ -7,9 +7,4 @@ function BulkLoader(){
   this.contacts = [];
 }
 
-BulkLoader.prototype.load = function(password) {
-  var self = this;
-
-};
-
 export default BulkLoader;

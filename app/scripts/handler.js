@@ -90,11 +90,7 @@ function setupHandlers() {
   });
 
   $('.generators').on('click', function(e) {
-    var bulkLoader = new GeneratorBulkLoader();
 
-    var input = $('input[type=password]').eq(4);
-
-    input.val('');
   });
 
   $('.clear').on('click', function(e) {

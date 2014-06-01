@@ -11309,11 +11309,6 @@ define("generators",
       this.contacts = [];
     }
 
-    BulkLoader.prototype.load = function(password) {
-      var self = this;
-
-    };
-
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
@@ -11412,11 +11407,7 @@ define("handler",
       });
 
       $('.generators').on('click', function(e) {
-        var bulkLoader = new GeneratorBulkLoader();
 
-        var input = $('input[type=password]').eq(4);
-
-        input.val('');
       });
 
       $('.clear').on('click', function(e) {
