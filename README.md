@@ -39,3 +39,21 @@ Asynchronicity
 8.  Refactor code in ```app/scripts/authenticator.js``` to return a promise and refactor the click handler detailed above to work with promises.
 
 9.  Test your code works by repeating step 3.
+
+### Test 2
+
+1.  Checkout the generators branch of the code by first commiting your work:
+    ```git add -A```
+    ```git commit -m "test 1 answers"```
+
+    **OR**
+
+    ```git reset --hard```
+
+    Followed by
+
+    ```git checkout generators```
+
+2.  Open the file ```~/app/scripts/generators.js```
+
+3.  Open file ```~/app/scripts/handler.js``` and go to line
