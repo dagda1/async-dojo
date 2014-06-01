@@ -7,4 +7,6 @@ function BulkLoader(){
   this.contacts = [];
 }
 
+// BulkLoader.prototype.iterator = ????
+
 export default BulkLoader;

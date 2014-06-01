@@ -11309,6 +11309,8 @@ define("generators",
       this.contacts = [];
     }
 
+    // BulkLoader.prototype.iterator = ????
+
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
