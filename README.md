@@ -75,7 +75,7 @@ Asynchronicity
 
 2.  Your mission in this final test is to refactor the followng code to use the new fangled generators:
 
-    ```
+```
     BulkLoader.prototype.load = function(password){
       var self = this;
 
@@ -94,6 +94,6 @@ Asynchronicity
         });
       });
     };
-    ```
+```
 
     **hint:** You call ```async```, passing in the generator function.
