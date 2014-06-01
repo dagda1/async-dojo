@@ -39,3 +39,61 @@ Asynchronicity
 8.  Refactor code in ```app/scripts/authenticator.js``` to return a promise and refactor the click handler detailed above to work with promises.
 
 9.  Test your code works by repeating step 3.
+
+### Test 2
+
+1.  Checkout the generators branch of the code by first commiting your work:
+    ```
+    git add -A
+    git commit -m "test 1 answers"
+    ```
+
+    **OR**
+
+    ```git reset --hard```
+
+    Followed by
+
+    ```git checkout generators```
+
+2.  Open the file ```~/app/scripts/generators.js```
+
+3.  Open file ```~/app/scripts/handler.js``` and go to line 92 and you will find a click handler for the generators button on the home page.
+
+4.  Change the ```iterator``` function on line 10 of ```~/app/scripts/generators.js``` to be an iterator function that returns an es6 iterator.
+
+5.  Using two way communication between the click handler in ```~/app/scripts/handler.js``` and the generator function to get the output in the console to look like the results below:
+    > The answer to question one is 2
+
+    > The answer to question two is 4
+
+    > The answer to question three is 42
+
+### Test 3
+
+1.  Either commit your work or reset the generators branch to give you an empty click handler and an an empty generator function in ```~/app/scripts/generators.js```.
+
+2.  Your mission in this final test is to refactor the followng code to use the new fangled generators:
+
+```
+    BulkLoader.prototype.load = function(password){
+      var self = this;
+
+      return new RSVP.Promise(function(resolve, reject) {
+        return getJSON('/auth/' + password).then(function() {
+          return getJSON('/users');
+        }).then(function(data) {
+          self.users = data;
+          return getJSON('/contacts');
+        }).then(function(data) {
+          self.contacts = data;
+          return getJSON('/companies');
+        }).then(function(data) {
+          self.companies = data;
+          resolve(self);
+        });
+      });
+    };
+```
+
+**hint:** You call ```async```, passing in the generator function.
