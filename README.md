@@ -43,8 +43,10 @@ Asynchronicity
 ### Test 2
 
 1.  Checkout the generators branch of the code by first commiting your work:
-    ```git add -A```
-    ```git commit -m "test 1 answers"```
+    ```
+    git add -A
+    git commit -m "test 1 answers"
+    ```
 
     **OR**
 
@@ -56,8 +58,13 @@ Asynchronicity
 
 2.  Open the file ```~/app/scripts/generators.js```
 
-3.  Open file ```~/app/scripts/handler.js``` and go to line
+3.  Open file ```~/app/scripts/handler.js``` and go to line 92 and you will find a click handler for the generators button on the home page.
 
-The answer to question one is 2
-The answer to question two is 4
-The answer to question three is 42 
+4.  Change the ```iterator``` function on line 10 of ```~/app/scripts/generators.js``` to be an iterator function that returns an es6 iterator.
+
+5.  Using two way communication between the click handler in ```~/app/scripts/handler.js``` and the generator function to get the output in the console to look like the results below:
+    > The answer to question one is 2
+
+    > The answer to question two is 4
+
+    > The answer to question three is 42
