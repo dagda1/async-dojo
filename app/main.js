@@ -11264,12 +11264,6 @@ define("callbacks",
 
     __exports__["default"] = BulkLoader;
   });
-define("first_refactor", 
-  ["read"],
-  function(__dependency1__) {
-    "use strict";
-    var getJSON = __dependency1__["default"];
-  });
 define("generator-utils", 
   ["exports"],
   function(__exports__) {
