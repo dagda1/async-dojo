@@ -7,18 +7,23 @@ function BulkLoader(){
   this.contacts = [];
 }
 
-BulkLoader.prototype.iterator = function () {
-  let one = "What is 2 + 2?";
+BulkLoader.prototype.load = function (password) {
+  var self = this;
 
-  console.log("The answer to question one is " + one);
+  return async(function * () {
 
-  let two = "What is 2 x 2?";
+    try {
+      let auth = yield getJSON('/auth/' + password);
+      self.users = yield getJSON('/users');
+      self.contacts = yield getJSON('/contacts');
+      self.companies = yield getJSON('/companies');
+      return self;
+    } catch(err) {
+      throw err;
+    }
 
-  console.log("The answer to question two is " + two);
+  });
 
-  let three = "What is the answer to life the universe and everything?";
-
-  console.log("The answer to question three is " + three);
 };
 
 export default BulkLoader;

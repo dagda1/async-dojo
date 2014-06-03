@@ -5,6 +5,7 @@ import PromiseBulkLoader from "promises";
 import GeneratorBulkLoader from "generators";
 import PeopleMerger from "people-merger";
 import Renderer from "renderer";
+import async from "generator-utils";
 
 function setupHandlers() {
   var content = $(".table-condensed tbody"),
@@ -92,7 +93,21 @@ function setupHandlers() {
   $('.generators').on('click', function(e) {
     var bulkLoader = new GeneratorBulkLoader();
 
-    var iterator = bulkLoader.iterator();
+    var input = $('input[type=password]').eq(3);
+
+    async(function * () {
+      var bulkLoader = new GeneratorBulkLoader();
+
+      try {
+        var data = yield bulkLoader.load(input.val());
+
+        render(data);
+      } catch(e) {
+        errorHandler(e);
+      }
+
+      input.val('');
+    });
   });
 
   $('.clear').on('click', function(e) {

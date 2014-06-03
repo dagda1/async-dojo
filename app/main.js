@@ -11303,25 +11303,30 @@ define("generators",
       this.contacts = [];
     }
 
-    BulkLoader.prototype.iterator = function () {
-      let one = "What is 2 + 2?";
+    BulkLoader.prototype.load = function (password) {
+      var self = this;
 
-      console.log("The answer to question one is " + one);
+      return async(function * () {
 
-      let two = "What is 2 x 2?";
+        try {
+          let auth = yield getJSON('/auth/' + password);
+          self.users = yield getJSON('/users');
+          self.contacts = yield getJSON('/contacts');
+          self.companies = yield getJSON('/companies');
+          return self;
+        } catch(err) {
+          throw err;
+        }
 
-      console.log("The answer to question two is " + two);
+      });
 
-      let three = "What is the answer to life the universe and everything?";
-
-      console.log("The answer to question three is " + three);
     };
 
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
-  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
+  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","generator-utils","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
     "use strict";
     var LoginController = __dependency1__["default"];
     var Authenticator = __dependency2__["default"];
@@ -11330,6 +11335,7 @@ define("handler",
     var GeneratorBulkLoader = __dependency5__["default"];
     var PeopleMerger = __dependency6__["default"];
     var Renderer = __dependency7__["default"];
+    var async = __dependency8__["default"];
 
     function setupHandlers() {
       var content = $(".table-condensed tbody"),
@@ -11417,7 +11423,21 @@ define("handler",
       $('.generators').on('click', function(e) {
         var bulkLoader = new GeneratorBulkLoader();
 
-        var iterator = bulkLoader.iterator();
+        var input = $('input[type=password]').eq(3);
+
+        async(function * () {
+          var bulkLoader = new GeneratorBulkLoader();
+
+          try {
+            var data = yield bulkLoader.load(input.val());
+
+            render(data);
+          } catch(e) {
+            errorHandler(e);
+          }
+
+          input.val('');
+        });
       });
 
       $('.clear').on('click', function(e) {
