@@ -11248,12 +11248,12 @@ define("callbacks",
     BulkLoader.prototype.load = function(password, callback, errBk){
       var self = this;
 
-      getJSON('/auth/' + password).done(function(data) {
-        getJSON('/users').done(function(data) {
+      $.getJSON('/auth/' + password).done(function(data) {
+        $.getJSON('/users').done(function(data) {
           self.users = data;
-          getJSON('/companies').done(function(data) {
+          $.getJSON('/companies').done(function(data) {
             self.companies = data;
-            getJSON('/contacts').done(function(data) {
+            $.getJSON('/contacts').done(function(data) {
               self.contacts = data;
               callback(self);
             }).fail(errBk);
@@ -11263,12 +11263,6 @@ define("callbacks",
     };
 
     __exports__["default"] = BulkLoader;
-  });
-define("first_refactor", 
-  ["read"],
-  function(__dependency1__) {
-    "use strict";
-    var getJSON = __dependency1__["default"];
   });
 define("generator-utils", 
   ["exports"],
