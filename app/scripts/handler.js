@@ -5,6 +5,7 @@ import PromiseBulkLoader from "promises";
 import GeneratorBulkLoader from "generators";
 import PeopleMerger from "people-merger";
 import Renderer from "renderer";
+import async from "generator-utils";
 
 function setupHandlers() {
   var content = $(".table-condensed tbody"),
