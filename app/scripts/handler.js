@@ -55,7 +55,13 @@ function setupHandlers() {
 
     var input = $('input[type=password]').eq(0);
 
-    authenticator.login(input.val(), successHandler, errorHandler);
+    var success = function() {
+      successHandler("Welcome back captain!");
+    };
+
+    authenticator.login(input.val())
+                  .then(success)
+                  .catch(errorHandler);
 
     input.val('');
   });

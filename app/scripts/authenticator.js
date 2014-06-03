@@ -2,12 +2,12 @@ import getJSON from "read";
 
 function Authenticator() {}
 
-Authenticator.prototype.login = function(password, cbk, errBk) {
+Authenticator.prototype.login = function(password) {
+  return new RSVP.Promise(function(resolve, reject) {
   getJSON("/auth/" + password)
-    .done(function(data) {
-      return cbk("Welcome back captain!");
-    })
-    .fail(errBk);
+        .then(resolve)
+        .catch(reject);
+  });
 };
 
 export default Authenticator;
