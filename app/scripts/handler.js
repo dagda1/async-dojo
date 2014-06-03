@@ -63,7 +63,11 @@ function setupHandlers() {
 
     var input = $('input[type=password]').eq(0);
 
-    authenticator.login(input.val(), successHandler, errorHandler);
+    var success = function() {
+      return successHandler("You have successfully logged in!");
+    };
+
+    authenticator.login(input.val(), success, errorHandler);
 
     input.val('');
   });

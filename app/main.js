@@ -11226,7 +11226,7 @@ define("authenticator",
     Authenticator.prototype.login = function(password, cbk, errBk) {
       getJSON("/auth/" + password)
         .done(function(data) {
-          return cbk("Welcome back captain!");
+          return cbk();
         })
         .fail(errBk);
     };
@@ -11387,7 +11387,11 @@ define("handler",
 
         var input = $('input[type=password]').eq(0);
 
-        authenticator.login(input.val(), successHandler, errorHandler);
+        var success = function() {
+          return successHandler("You have successfully logged in!");
+        };
+
+        authenticator.login(input.val(), success, errorHandler);
 
         input.val('');
       });
