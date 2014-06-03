@@ -1,4 +1,3 @@
-import LoginController from "login";
 import Authenticator from "authenticator";
 import CallbackBulkLoader from "callbacks";
 import PromiseBulkLoader from "promises";
@@ -50,13 +49,6 @@ function setupHandlers() {
 
     renderer.render();
   };
-
-  $('.login').on('click', function(e) {
-    var loginController = new LoginController();
-
-    loginController.login(successHandler, errorHandler);
-  });
-
 
   $('.authenticate').on('click', function(e) {
     var authenticator = new Authenticator();
