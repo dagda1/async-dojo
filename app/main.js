@@ -11194,20 +11194,18 @@ var define, requireModule;
 })();
 
 define("async", 
-  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","handler","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
+  ["authenticator","callbacks","promises","generators","people-merger","renderer","handler","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
     "use strict";
-    var LoginController = __dependency1__.LoginController;
-    var Authenticator = __dependency2__.Authenticator;
-    var CallbackBulkLoader = __dependency3__.CallbackBulkLoader;
-    var PromiseBulkLoader = __dependency4__.PromiseBulkLoader;
-    var GeneratorBulkLoader = __dependency5__.GeneratorBulkLoader;
-    var PeopleMerger = __dependency6__.PeopleMerger;
-    var Renderer = __dependency7__.Renderer;
-    var setupHandlers = __dependency8__.setupHandlers;
+    var Authenticator = __dependency1__.Authenticator;
+    var CallbackBulkLoader = __dependency2__.CallbackBulkLoader;
+    var PromiseBulkLoader = __dependency3__.PromiseBulkLoader;
+    var GeneratorBulkLoader = __dependency4__.GeneratorBulkLoader;
+    var PeopleMerger = __dependency5__.PeopleMerger;
+    var Renderer = __dependency6__.Renderer;
+    var setupHandlers = __dependency7__.setupHandlers;
 
     __exports__.setupHandlers = setupHandlers;
-    __exports__.LoginController = LoginController;
     __exports__.Authenticator = Authenticator;
     __exports__.CallbackBulkLoader = CallbackBulkLoader;
     __exports__.PromiseBulkLoader = PromiseBulkLoader;
@@ -11320,17 +11318,16 @@ define("generators",
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
-  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","generator-utils","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
+  ["authenticator","callbacks","promises","generators","people-merger","renderer","generator-utils","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
     "use strict";
-    var LoginController = __dependency1__["default"];
-    var Authenticator = __dependency2__["default"];
-    var CallbackBulkLoader = __dependency3__["default"];
-    var PromiseBulkLoader = __dependency4__["default"];
-    var GeneratorBulkLoader = __dependency5__["default"];
-    var PeopleMerger = __dependency6__["default"];
-    var Renderer = __dependency7__["default"];
-    var async = __dependency8__["default"];
+    var Authenticator = __dependency1__["default"];
+    var CallbackBulkLoader = __dependency2__["default"];
+    var PromiseBulkLoader = __dependency3__["default"];
+    var GeneratorBulkLoader = __dependency4__["default"];
+    var PeopleMerger = __dependency5__["default"];
+    var Renderer = __dependency6__["default"];
+    var async = __dependency7__["default"];
 
     function setupHandlers() {
       var content = $(".table-condensed tbody"),
@@ -11375,13 +11372,6 @@ define("handler",
 
         renderer.render();
       };
-
-      $('.login').on('click', function(e) {
-        var loginController = new LoginController();
-
-        loginController.login(successHandler, errorHandler);
-      });
-
 
       $('.authenticate').on('click', function(e) {
         var authenticator = new Authenticator();
