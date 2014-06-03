@@ -11319,8 +11319,8 @@ define("generators",
     __exports__["default"] = BulkLoader;
   });
 define("handler", 
-  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","exports"],
-  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __exports__) {
+  ["login","authenticator","callbacks","promises","generators","people-merger","renderer","generator-utils","exports"],
+  function(__dependency1__, __dependency2__, __dependency3__, __dependency4__, __dependency5__, __dependency6__, __dependency7__, __dependency8__, __exports__) {
     "use strict";
     var LoginController = __dependency1__["default"];
     var Authenticator = __dependency2__["default"];
@@ -11329,6 +11329,7 @@ define("handler",
     var GeneratorBulkLoader = __dependency5__["default"];
     var PeopleMerger = __dependency6__["default"];
     var Renderer = __dependency7__["default"];
+    var async = __dependency8__["default"];
 
     function setupHandlers() {
       var content = $(".table-condensed tbody"),
